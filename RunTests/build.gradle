@@ -1,0 +1,25 @@
+apply plugin: 'java'
+
+dependencies {
+    testCompile project(':Example')
+    testCompile "junit:junit:4.10"
+    testCompile 'org.robolectric:robolectric:2.0-alpha-2'
+
+    testCompile project(":Example").android.applicationVariants.toList().first().javaCompile.outputs.files
+    testCompile project(":Example").android.applicationVariants.toList().first().javaCompile.classpath
+    testCompile files(project(":Example").plugins.findPlugin("android").runtimeJarList)
+}
+
+
+test {
+    inputs.files file("AndroidManifest.xml")
+    doFirst {
+        copy {
+            from project(":Example").file("src/main/AndroidManifest.xml")
+            into projectDir
+        }
+    }
+    testLogging {
+        events "started", "standard_out"
+    }
+}

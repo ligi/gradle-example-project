@@ -23,3 +23,8 @@ test {
         events "started", "standard_out"
     }
 }
+
+tasks.withType(Test) {
+    scanForTestClasses = false
+    include "**/*Should.class" // whatever Ant pattern matches your test class files
+}
